@@ -1,0 +1,15 @@
+class Solution {
+  public:
+    long long int minOperations(int N) {
+        // Code here
+         long long int s;
+        // Code here
+        
+         if(N%2!=0){
+         return (long long int)(N/2)*(long long int)(N/2+1);
+        }
+        else{
+           return (long long int)(N/2)*(long long int)(N/2);
+        }
+    }
+};
