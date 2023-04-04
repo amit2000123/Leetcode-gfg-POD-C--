@@ -1,0 +1,11 @@
+// User function Template for C++
+
+int minSteps(string str) {  
+    int c=1;
+    for(int i=1;i<str.length();i++) 
+    {
+        if(str[i]!=str[i-1]) 
+            c++;
+    }
+    return c/2 +1; 
+}
