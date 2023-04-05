@@ -1,0 +1,32 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    int countSpecialNumbers(int N, vector<int> arr) {
+        // Code here
+        int count=0;
+        vector<int>vis(N+1,0);
+        sort(arr.begin(),arr.end());
+        for(int i=0;i<N;i++)
+        {
+            if(vis[i]==0)
+            {
+                if(i+1<N && arr[i]==arr[i+1])
+                count++;
+                
+                for(int j=i+1;j<N;j++)
+                {
+                    if(arr[j]%arr[i]==0)
+                    {
+                        if(vis[j]==0)
+                        {
+                            vis[j]=1;
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
