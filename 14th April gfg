@@ -1,0 +1,17 @@
+// User function Template for C++
+class Solution {
+  public:
+    int finLength(int N, vector<int> color, vector<int> radius) {
+        stack <int> s;
+        for(int i=0;i<N;i++){
+            if(s.size()>0){
+                if(color[s.top()]==color[i] and radius[s.top()]==radius[i]){
+                    s.pop();
+                    continue;
+                }
+            }
+            s.push(i);
+        }
+        return s.size();
+    }
+};
