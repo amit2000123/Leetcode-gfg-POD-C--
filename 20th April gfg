@@ -1,0 +1,53 @@
+/*
+// node structure:
+
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+
+*/
+
+
+
+class Solution{
+
+    public:
+    unordered_map<Node*, Node*> parent;
+    unordered_set<Node*> vis;
+    Node* homeNode;
+    
+    void dfs(Node* root, int home, Node* &homeNode) {
+        if(!root) return;
+        
+        if(root->data == home) homeNode = root;
+        
+        if(root->left) {
+            parent[root->left] = root;
+            dfs(root->left, home, homeNode);
+        }
+        
+        if(root->right) {
+            parent[root->right] = root;
+            dfs(root->right, home, homeNode);
+        }
+    }
+    
+    int helper(Node* root, int k) {
+        if(root == NULL || k < 0 || vis.find(root) != vis.end()) return 0;
+        vis.insert(root);
+        int res = root->data + helper(parent[root], k-1) + helper(root->left, k-1) + helper(root->right, k-1);
+    }
+    int ladoos(Node* root, int home, int k)
+    {
+        // Your code goes here
+         parent[root] = NULL;
+        homeNode = NULL;
+        dfs(root, home, homeNode);
+        return helper(homeNode, k);
+    }
+
+
+};
