@@ -1,0 +1,30 @@
+class SmallestInfiniteSet {
+public:
+    set<int>s; //keeps all values less than current min_num in sorted order
+    int min_num;
+    SmallestInfiniteSet() {
+        min_num=1;
+    }
+    
+    int popSmallest() {
+        if(!s.empty()&&*s.begin()<min_num){ // pick smallest from set if it's not empty
+            int ans=*s.begin();
+            s.erase(ans);
+            return ans;
+        }
+        return min_num++;
+    }
+    
+    void addBack(int num) { 
+        if(min_num<=num) // if the num is >= min_num, ignore as it's still not deleted
+            return;
+        s.insert(num); // it's less than min_num so add it in your set
+    }
+};
+
+/**
+ * Your SmallestInfiniteSet object will be instantiated and called as such:
+ * SmallestInfiniteSet* obj = new SmallestInfiniteSet();
+ * int param_1 = obj->popSmallest();
+ * obj->addBack(num);
+ */
