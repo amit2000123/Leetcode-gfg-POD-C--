@@ -1,0 +1,70 @@
+class UnionFind
+{
+private:
+    vector<int> par;
+    vector<int> rank;
+    int findPar(int u)
+    {
+        if (u == par[u]) return u;
+        else return par[u] = findPar(par[u]);
+    }
+public:
+    UnionFind(int Size)
+    {
+        par = vector<int> (Size);
+        rank = vector<int> (Size,0);
+        for (int i = 0; i < Size; i++)
+            par[i] = i;
+    }
+    void join(int u, int v)
+    {
+        u = findPar(u);
+        v = findPar(v);
+        if (u == v) return;
+        if (rank[u] < rank[v])
+            par[u] = v;
+        else if (rank[v] < rank[u])
+            par[v] = u;
+        else
+        {
+            par[u] = v;
+            rank[v]++;
+        }
+    }
+    bool check(int u, int v)
+    {
+        return findPar(u) == findPar(v);
+    }
+};
+
+
+class Solution {
+public:
+    typedef pair<int,int> ii;
+    bool static cmp(vector<int> &a, vector<int> &b)
+    {
+        return a[2] < b[2];
+    }
+    vector<bool> distanceLimitedPathsExist(int n, vector<vector<int>>& edgeList, vector<vector<int>>& queries) {
+        UnionFind uni(n);
+        int m = queries.size();
+        vector<bool> ans(m,false);
+        for (int i = 0; i < m; i++)
+        {
+            queries[i].push_back(i);
+        }
+        sort(queries.begin(),queries.end(),cmp);
+        sort(edgeList.begin(),edgeList.end(),cmp);
+        int i = 0;
+        for (auto e : queries)
+        {
+            while(i < edgeList.size() && edgeList[i][2] < e[2])
+            {
+                uni.join(edgeList[i][0],edgeList[i][1]);
+                i++;
+            }
+            ans[e[3]] = uni.check(e[0],e[1]);
+        }
+        return ans;
+    }
+};
