@@ -1,0 +1,40 @@
+//User function Template for C++
+
+class Solution{
+    private:
+   int ans=0;
+unordered_set<int> travel(Node*root, int k)
+{
+    unordered_set<int> st1,st2,st;
+    if(root->left)
+    {
+        st1=travel(root->left,k);
+    }
+    if(root->right)
+    {
+        
+        st2=travel(root->right,k);
+    }
+
+
+for(int i:st1)
+            st.insert(i);
+
+        for(int i:st2)
+            st.insert(i);     
+        st.insert(root->data);
+
+if(st.size()<=k)
+    ans++;
+    return st;
+}
+public:
+    int goodSubtrees(Node *root,int k){
+        // Code here
+          if(root==NULL)return 0;
+
+      unordered_set<int> st=travel(root,k);
+
+        return ans;
+    }
+};
