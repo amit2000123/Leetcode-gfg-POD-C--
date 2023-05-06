@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int numSubseq(vector<int>& nums, int target) {
+        
+        int n = nums.size();
+        
+        long long mod = 1e9 + 7;
+        
+        // sort the nums
+        
+        sort(nums.begin(), nums.end());
+        
+        // precalculate the power and store in powers array
+        
+        vector<int> powers(n, 1);
+        
+        for(int i = 1; i < n; i++)
+        {
+            powers[i] = (powers[i - 1] % mod * 2 % mod) % mod;
+        }
+        
+        // apply two pointer approach and find possible result
+        
+        int i = 0, j = n - 1;
+        
+        int res = 0;
+        
+        while(i <= j)
+        {
+            if(nums[i] + nums[j] > target)
+            {
+                j--;
+            }
+            else
+            {
+                res = (res % mod + powers[j - i] % mod) % mod;
+                
+                i++;
+            }
+        }
+        
+        return res;
+    }
+};
