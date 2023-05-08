@@ -1,0 +1,18 @@
+class Solution{
+    public:
+        int modulo(string s,int m)
+        {
+            //code here
+              int ans = 0;
+            int mp = 1;
+            
+            for(int i = s.size()-1; i>=0; i--){
+                ans += (s[i]-48)*mp;
+                mp *= 2;
+                ans %= m;
+                mp %= m;
+            }
+            
+            return ans;
+        }
+};
