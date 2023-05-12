@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<long long>dp;
+    long long help(vector<vector<int>>&q,int idx){
+
+
+        //first the base of this questions
+        if(idx>=q.size()){
+            
+            return 0;
+        }
+       
+        if(dp[idx]!=-1){
+            return dp[idx];
+        }
+       
+
+
+       long long c1= help(q,idx+q[idx][1]+1)+q[idx][0];
+       long long c2= help(q,idx+1);
+        return dp[idx]=max(c1,c2);
+    }
+    long long mostPoints(vector<vector<int>>& q) {
+        dp.resize(q.size()+1,-1);
+
+
+      return help(q,0);
+        
+    }
+};
