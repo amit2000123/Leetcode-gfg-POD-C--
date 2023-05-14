@@ -1,0 +1,29 @@
+class Solution {
+private:
+    int solve(int ind, int mask, vector<int> nums, vector<vector<int>> &dp){
+        int n = nums.size();
+        if(ind > n/2){
+            if(mask == 0) return 0;
+            return -1e9;
+        }
+        if(dp[ind][mask] != -1) return dp[ind][mask];
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                if((mask & (1<<i)) && (mask & (1<<j))){
+                    mask ^= (1<<i); mask ^= (1<<j);
+                    ans = max(ans, ind*(__gcd(nums[i], nums[j])) + solve(ind+1,mask,nums,dp));
+                    mask ^= (1<<i); mask ^= (1<<j);
+                }
+            }
+        }return dp[ind][mask] = ans;
+    }
+public:
+    int maxScore(vector<int>& nums) {
+        int n = nums.size();
+        int mask = 0;
+        for(int i=0;i<n;i++) mask += (1 << i);
+        vector<vector<int>> dp(n/2 + 1 , vector<int> (mask+1, -1));
+        return solve(1,mask,nums,dp);
+    }
+};
