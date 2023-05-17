@@ -1,0 +1,55 @@
+class Solution{
+public:
+    int isPossible(int n, int m, string s){
+        // code here
+          int l=0,r=0,u=0,d=0;
+        bool flag=true;
+        for(int i=0;i<s.length();i++)
+        {
+            if(s[i]=='R')   //if we encounter 'R' , increment r
+            {
+                r++;
+                if(l>0) //since we have moved right ,decrease l
+                l--;
+                
+                if(r==m)  //check if we have reached end 
+                flag=false;
+            }
+
+//repeat the condition for left up down
+
+            else if(s[i]=='L')
+            {
+                l++;
+                if(r>0)
+                r--;
+                
+                if(l==m)
+                flag=false;
+            }
+             if(s[i]=='U')
+            {
+                u++;
+                if(d>0)
+                d--;
+                
+                if(u==n)
+                flag=false;
+            }
+            else if(s[i]=='D')
+            {
+                d++;
+                if(u>0)
+                u--;
+                
+                if(d==n)
+                flag=false;
+            }
+        }
+       
+        if(flag==false)
+        return 0;
+        else
+        return 1;
+    }
+};
