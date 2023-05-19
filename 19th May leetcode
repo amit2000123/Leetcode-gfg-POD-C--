@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void dfs(int curr, vector<vector<int>> &adj, vector<bool> &visited, vector<int> &color, int c, int &ans) {
+        if(ans != -1) return;
+        visited[curr] = true;
+        color[curr] = c;
+        for(int next: adj[curr]) {
+            if(color[next] != -1 && color[next] == c) {
+                ans = 0;
+                return;
+            }
+            if(visited[next] == false) {
+                dfs(next, adj, visited, color, 1 - c, ans);
+            }
+        }
+    }
+    bool isBipartite(vector<vector<int>>& adj) {
+        int ans = -1;
+        int V = adj.size();
+	    vector<bool> visited(V, false);
+	    vector<int> color(V, -1);
+	    for(int i = 0; i < V; i++) {
+	        if(visited[i] == false) {
+	            dfs(i, adj, visited, color, 0, ans);
+	        }
+	    }
+	    return -ans;
+    }
+    
+};
