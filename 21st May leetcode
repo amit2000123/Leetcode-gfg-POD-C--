@@ -1,0 +1,40 @@
+class Solution {
+public:
+    void dfs(int r,int c,vector<vector<int>> &grid,vector<vector<int>> &vis,vector<pair<int,int>> &cur){
+        vis[r][c]=1;
+        cur.push_back({r,c});
+        int dr[] = {-1,1,0,0};
+        int dc[] = {0,0,1,-1};
+        for(int i=0;i<4;++i){
+            int nr = r+dr[i];
+            int nc = c+dc[i];
+            if(nr>=0 && nr<grid.size() && nc>=0 && nc<grid[0].size() && !vis[nr][nc] && grid[nr][nc]){
+                dfs(nr,nc,grid,vis,cur);
+            }
+        }
+    }
+    int shortestBridge(vector<vector<int>>& grid) {
+        vector<vector<pair<int,int>>>lands;
+        vector<vector<int>> vis(grid.size(),vector<int>(grid[0].size(),0));
+        int cnt=INT_MAX;
+        for(int i=0;i<grid.size();++i){
+            for(int j=0;j<grid[0].size();++j){
+                if(!vis[i][j] && grid[i][j]){
+                    vector<pair<int,int>>cur;
+                    dfs(i,j,grid,vis,cur);
+                    lands.push_back(cur);
+                }
+            }
+        }   
+        // cout << lands.size() << endl;
+        vector<pair<int,int>> one = lands[0], two = lands[1];
+        for(int i=0;i<one.size();++i){
+            for(int j=0;j<two.size();++j){
+                int x = abs(one[i].first - two[j].first) + abs(one[i].second - two[j].second) - 1;
+                cnt = min(cnt, x);
+            }
+        }
+        return cnt;
+
+    }
+};
