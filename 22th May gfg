@@ -1,0 +1,16 @@
+//User function Template for C++
+
+class Solution {
+    public:
+    int solve(int N, vector<int> p){
+        // code here
+
+    set<int>s; 
+
+    for(int i=1;i<N;i++){
+        if(p[i]!=0) s.insert(p[i]);
+    }   
+
+    return s.size();
+    }
+};
