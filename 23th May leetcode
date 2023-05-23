@@ -1,0 +1,40 @@
+class KthLargest {
+public:
+    priority_queue<int,vector<int>,greater<int>> pq;
+    int K;
+    KthLargest(int k, vector<int>& nums) {
+        K=k;
+        for(auto x:nums){
+            pq.push(x);
+        }
+        int d = nums.size()-K;
+        while(d>0){
+            pq.pop();
+            d--;
+        }
+    }
+    
+    int add(int val) {
+        // 2 cases :
+        if(pq.size()<K){
+            pq.push(val);
+            return pq.top();
+        }
+        // incoming element less than or equal to top of min heap don't add element simply return top
+        if(!pq.empty()&&val<=pq.top()){
+             return pq.top();
+        }
+        else{
+             if(!pq.empty())
+             pq.pop();
+             pq.push(val);
+             return pq.top();
+        }
+    }
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * KthLargest* obj = new KthLargest(k, nums);
+ * int param_1 = obj->add(val);
+ */
