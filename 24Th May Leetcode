@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long long n,ans,sum,it=-1,b[100001];
+    vector <int> a[100001];
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        n=nums1.size();
+        for(int i=0;i<n;++i)
+            a[nums2[i]].push_back(nums1[i]);
+        for(int i=100000;i>=0;--i){
+            for(int j=0;j<a[i].size();++j){
+                if(a[i][j]<=it)continue;
+                b[a[i][j]]++;
+                sum+=a[i][j];
+                if(--k<=0){
+                    ans=max(ans,sum*i);
+                    if(it==-1)++it;
+                    while(!b[it])++it;
+                    sum-=it;
+                    b[it]--;
+                }
+            }
+        }
+        return ans;
+    }
+};
