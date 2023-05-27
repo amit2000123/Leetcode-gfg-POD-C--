@@ -1,0 +1,41 @@
+class Solution {
+public:
+
+    int dp[50001];
+
+    int solve(vector<int> &stone, int idx){
+        if(idx>=stone.size()){
+            return 0;
+        }
+
+        if(dp[idx]!=-1){
+            return dp[idx];
+        }
+
+        int n=stone.size();
+        int ans=INT_MIN;
+        int sum=0;
+        for(int i=idx;i<min(n,idx+3);i++){
+            sum+=stone[i];
+
+            ans=max(ans,sum-solve(stone,i+1));
+        }
+
+        return dp[idx] = ans;
+    }
+
+    string stoneGameIII(vector<int>& stone) {
+        int sum=0;
+
+        for(auto x:stone){
+            sum+=x;
+        }
+
+        memset(dp,-1,sizeof(dp));
+        int diff=solve(stone,0);
+        int ASum=(sum+diff)/2;
+        int BSum=sum-ASum;
+        
+        return ASum>=BSum?ASum==BSum?"Tie":"Alice":"Bob";
+    }
+};
