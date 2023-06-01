@@ -1,0 +1,43 @@
+class Solution {
+public:
+int delrow[8]={1,-1,0,0,1,1,-1,-1};
+int delcol[8]={0,0,1,-1,1,-1,1,-1};
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        int n=grid.size();
+        if(grid[0][0]==1)
+        {
+            return -1;
+        }
+        queue<pair<int,int>>q;
+        q.push({0,0});
+        int cnt=0;
+        while(!q.empty())
+        {
+            int qsize=q.size();
+            cnt++;
+            while(qsize--)
+            {
+                int row=q.front().first;
+                int col=q.front().second;
+                q.pop();
+                if(row==n-1 && col==n-1)
+                {
+                    return cnt;
+                }
+                for(int i=0;i<8;i++)
+                {
+                    int newrow=row+delrow[i];
+                    int newcol=col+delcol[i];
+
+                    if(newrow>=0  &&  newcol>=0 && newrow<n && newcol<n && grid[newrow][newcol]==0)
+                    {
+                        grid[newrow][newcol]=1;
+                        q.push({newrow,newcol});
+                    }
+                }
+            }
+        }
+        return -1;
+        
+    }
+};
