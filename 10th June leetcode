@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxValue(int n, int index, int maxSum) {
+        long long low = 1, high = maxSum;
+        long long ans = 1;
+        while(low<=high) {
+            long long mid = low + (high-low)/2;
+            if(isValid(mid,n,index,maxSum)) {
+                ans = mid;
+                low = mid+1;
+            }
+            else high = mid-1;
+        }
+        return (int) ans;
+    }
+
+    bool isValid(long long mid, int n, long long index, int maxSum) {  
+            long long leftsum = 0, rightsum=0;          
+            // left part
+            long long noofElement = 0;
+            noofElement = min(index,mid-1); // why min? we want to avoid negative numbers and for 0 based indexing we use mid-1
+            leftsum = mid*(noofElement) - ((noofElement*(noofElement+1))/2);
+            leftsum += max((long long)0,index-mid+(long long)1); // to make all 0s as 1 because index-mid+1 elements can be 0 at most
+            
+            //  right part
+            noofElement = min(n-index-1,mid-1); // why min? again to avoid negative numbers 
+            rightsum = mid*(noofElement) - ((noofElement*(noofElement+1))/2);
+            rightsum+=max((long long)0,(long long)n-index-mid); // here no of possible 0s will be n-index-mid
+
+            return (leftsum+rightsum+mid<=maxSum) ? true : false;
+    }
+
+};
