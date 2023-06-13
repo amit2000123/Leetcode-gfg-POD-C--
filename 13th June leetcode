@@ -1,0 +1,14 @@
+//User function template for C++
+class Solution{
+public:	
+	vector<int> kLargest(int arr[], int n, int k) {
+	    // code here
+	    vector<int>ans;
+	    sort(arr,arr+n);
+	    for(int i=n-1;i>n-k-1;i--){
+	        ans.push_back(arr[i]);
+	    }
+	    return ans;
+	}
+
+};
