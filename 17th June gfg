@@ -1,0 +1,34 @@
+//User function Template for C++
+// Helper class Solution to implement 
+// insert() and findFrequency()
+class Solution{
+    public:
+    // Function to insert element into the queue
+    void insert(queue<int> &q, int k){
+        q.push(k);
+    }
+    
+    // Function to find frequency of an element
+    // return the frequency of k
+    int findFrequency(queue<int> &q, int k){
+       stack<int>s;
+       int count = 0;
+       while(!q.empty()){
+           if(q.front() == k){
+               count++;
+           }
+           int a =  q.front();
+           s.push(a);
+           q.pop();
+       }
+       while(!s.empty()){
+           q.push(s.top());
+           s.pop();
+       }
+       if(count == 0){
+           return -1;
+       }
+       return count;
+    }
+    
+};
