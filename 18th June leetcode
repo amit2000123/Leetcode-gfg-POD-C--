@@ -1,0 +1,58 @@
+class Solution {
+public:
+    int mod = pow(10, 9) + 7;
+    
+    // Recursive helper function to calculate the number of paths
+    int helper(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp, int parent){
+        int m = grid.size();
+        int n = grid[0].size();
+
+        // If the current position is out of bounds or the value is not greater than the parent,
+        // return 0 since we cannot move to this position
+        if(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] <= parent){
+            return 0;
+        }
+
+        // If the result for the current position has already been calculated, return it
+        if(dp[i][j] != -1){
+            return dp[i][j];
+        }
+
+        // Recursively calculate the number of paths in each direction
+        int down  = helper(i + 1, j, grid, dp, grid[i][j]) % mod;
+        int up    = helper(i - 1, j, grid, dp, grid[i][j]) % mod;
+        int right = helper(i, j + 1, grid, dp, grid[i][j]) % mod;
+        int left  = helper(i, j - 1, grid, dp, grid[i][j]) % mod;
+
+        // Store the result in the DP table, considering the modulo operation
+        return dp[i][j] = (down + up + right + left + 1) % mod;
+    }
+
+    // Main function to count the number of paths
+    int countPaths(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+
+        // Initialize the DP table with -1 values
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+
+        // Iterate through each position in the grid
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                // If the position has not been visited, calculate the number of paths from it
+                if(dp[i][j] == -1){
+                    helper(i, j, grid, dp, -1);
+                }
+            }
+        } 
+
+        // Calculate the sum of all the results in the DP table
+        long long ans = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                ans = (ans + dp[i][j]) % mod;
+            }
+        } 
+        return ans;
+    }
+};
