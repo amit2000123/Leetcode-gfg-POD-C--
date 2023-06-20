@@ -1,0 +1,19 @@
+class Solution {
+public:
+    vector<int> getAverages(vector<int>& nums, int k) {
+        int l = 0, r = 0;
+        int n = nums.size();
+        vector<int> ans(n,-1);
+        int d = 2*k + 1;
+        long long sum = 0;
+        for(r = 0; r < n; r++) {
+            sum += nums[r];
+            if(r-l+1 == d) {
+                ans[r-k] = sum/d;
+                sum -= nums[l];
+                l++;
+            }
+        }
+        return ans;
+    }
+};
