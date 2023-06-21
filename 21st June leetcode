@@ -1,0 +1,75 @@
+#pragma GCC optimize("Ofast","inline","ffast-math","unroll-loops","no-stack-protector", "-foptimize-strlen")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,avx2,tune=native,f16c")
+static const int _ = [](){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 0;
+}();
+
+class Solution {
+public:
+
+    long long minCost(vector<int>& nums, vector<int>& cost) {
+    int l = nums.size();
+
+    vector<pair<int,int>> pr;  long long costsum = 0;
+    for(int i=0; i<l; i++) {
+        pair<int,int> t = make_pair(nums[i],cost[i]);
+        pr.push_back(t);
+        costsum += cost[i];
+    }
+    sort(pr.begin(), pr.end());     //sorting wrt nums[i]
+
+
+    // find prefixsum and suffixsum of cost[i]
+    long long costprefixsum[l], costsuffixsum[l];
+    costsuffixsum[0] = costsum-pr[0].second; costprefixsum[0] = 0;
+
+    for(int i=1; i<l; i++) {
+        costprefixsum[i] = (long long)(costprefixsum[i-1]) + (long long)(pr[i-1].second);
+        costsuffixsum[i] = costsum - costprefixsum[i] - pr[i].second;
+    }
+
+    // ----------------correct code above--------------------
+
+
+    // formula ans += abs(nums[j]-nums[i])*cost[j]
+    // anspre[i+1] = anspre[i] + (nums[i+1]-nums[i])*costprefixsum[i]
+    // anssuf[i-1] = anssuf[i] + (nums[i-1]-nums[i])*costsuffixsum[i]
+    // finally sum of anspre and anssuf 
+    // and then max of final
+
+    long long anspre[l], anssuf[l];
+    anspre[0]=0; anssuf[l-1]=0; 
+
+
+    for(int i=1; i<l; i++) {
+        anspre[i] = (anspre[i-1]) + (pr[i].first - pr[i-1].first)*costprefixsum[i];
+    }
+
+    long long min_ans = LONG_MAX; 
+    for(int i=l-1; i>0; i--) {
+        anssuf[i-1] = anssuf[i] + (pr[i].first-pr[i-1].first)*costsuffixsum[i-1];
+        min_ans = min(min_ans, (anspre[i-1] + anssuf[i-1]));       //calcu minimum so far
+    }
+    min_ans = min(min_ans, (anspre[l-1] + anssuf[l-1]));
+
+    return min_ans;
+
+
+
+    //--- time limit exceed on 40/48 ----///
+
+    //     vector<int> temp = nums;
+    //     long long min_cost = LONG_MAX, t;
+    //     for(int i=0; i<nums.size(); i++) {
+    //         t=0;
+    //         for(int j=0; j<nums.size(); j++) {
+    //             t = (long long)t + abs((long long)(nums[j]) - (long long)(nums[i])) * (long long)(cost[j]);
+    //         }
+    //         min_cost = min(min_cost,t);
+    //     }
+    //     return min_cost;
+    }
+};
