@@ -1,0 +1,32 @@
+class Solution {
+public:
+
+    int dp[510010][2];
+    int f;
+    int n;
+    
+    int rec(int level,int taken,vector<int>& prices){
+        if(level==n){
+            if(taken==0)return 0;
+            else return -1e9;
+        }
+        if(dp[level][taken]!=-1)return dp[level][taken];
+        int ans=0;
+        if(taken){
+            ans=max(rec(level+1,taken,prices),rec(level+1,0,prices)+prices[level]-f);
+        }else{
+            ans=max(rec(level+1,taken,prices),rec(level+1,1,prices)-prices[level]);
+        }
+        return dp[level][taken]=ans;
+    }
+
+    int maxProfit(vector<int>& prices, int fee) {
+        n=prices.size();
+        f=fee;
+        for(int i=0;i<=n;i++){
+            dp[i][0]=-1;
+            dp[i][1]=-1;
+        }
+        return rec(0,0,prices);
+    }
+};
