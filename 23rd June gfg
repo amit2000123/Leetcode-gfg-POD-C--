@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    int leastInterval(int N, int K, vector<char> &tasks) {
+        // code here
+         int res=0,count=0;
+        vector<int>v(26,0);
+        
+        for(char c:tasks){
+            v[c-'A']++;
+            res=max(res,v[c-'A']);
+        }
+        
+        for(int i:v){
+            if(i==res){
+                count++;
+            }
+        }
+        
+        return max(N,res + (res- 1)*K + count - 1);
+    }
+};
