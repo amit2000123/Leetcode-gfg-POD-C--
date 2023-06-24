@@ -1,0 +1,22 @@
+//User function Template for C++
+
+class Solution{ 
+    bool solve(string arr, string str,int k){
+        for(int i=0;i<k;i++){
+            if(arr[i]!=str[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+public:
+    int klengthpref(string arr[], int n, int k, string str){    
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(solve(arr[i],str,k)){
+                count++;
+            }
+        }
+        return count;
+    }
+};
