@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int logic(vector<int>& locations, int start, int &finish, int fuel , int count,vector<vector<int>>&dp){
+        if(count>fuel){
+            return 0;
+        }
+        if(dp[start][count]!=-1)
+            return dp[start][count];
+        int a=0;
+        if( start==finish){
+            a++;
+        }
+        int n = locations.size();
+        for(int i=0;i<n;i++){
+            if(i!=start)
+                a = (a%(1000000007) +  (logic(locations,i,finish,fuel,count + abs(locations[i]-locations[start]),dp)%(1000000007)))%(1000000007);
+        }
+        return dp[start][count]=a%(1000000007);
+    }
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+        vector<vector<int>>dp(locations.size(),vector<int>(fuel+1,-1));
+        return logic(locations,start,finish,fuel,0,dp);
+    }
+};
