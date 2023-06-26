@@ -1,0 +1,48 @@
+class cmp{
+    public:
+    bool operator()(pair<int, int>&a, pair<int, int>&b){
+        if(a.first!=b.first)return b.first<a.first;
+        return b.second<a.second;
+    }
+};
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int candidates) {
+        priority_queue<pair<int,int>, vector<pair<int, int>>, cmp>pq;
+        int n = costs.size();
+        long long expenditure = 0;
+        if(n<2*candidates){
+            for(int i =0;i<n; i++){
+                pq.push({costs[i],i});
+            }
+        }
+        else{
+            for(int i =0;i<candidates; i++){
+                pq.push({costs[i],i});
+            }
+            for(int i =n-1;i>=n-candidates; i--){
+                pq.push({costs[i],i});
+            }
+        }
+        int hiredFromFront = 0;
+        int hiredFromBack = 0;
+        while(!pq.empty() && hiredFromFront + hiredFromBack < k){
+            int curr = pq.top().first;
+            int index = pq.top().second;
+            expenditure+= curr;
+            pq.pop();
+            if(n-hiredFromFront-hiredFromBack<=2*candidates){
+                hiredFromFront++;
+                continue;
+            }
+            if(index<candidates+hiredFromFront){
+                pq.push({costs[candidates+hiredFromFront],candidates+hiredFromFront});
+                hiredFromFront++;
+            }else{
+                pq.push({ costs[n-candidates-hiredFromBack-1],n-candidates-hiredFromBack-1});
+                hiredFromBack++;
+            }
+        }
+        return expenditure;
+    }
+};
