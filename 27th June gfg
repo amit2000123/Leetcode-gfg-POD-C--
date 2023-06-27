@@ -1,0 +1,28 @@
+class Solution
+{
+    public:
+    struct Node* makeUnion(struct Node* head1, struct Node* head2)
+    {
+        // code here
+          Node *t=new Node(0);
+        Node *temp=t;
+        map<int,int>m;
+        while(head1!=NULL)
+        {
+            m[head1->data]++;
+            head1=head1->next;
+        }
+        while(head2!=NULL)
+        {
+            m[head2->data]++;
+            head2=head2->next;
+        }
+        for(auto k:m)
+        {
+            Node *s=new Node(k.first);
+            t->next=s;
+            t=s;
+        }
+        return temp->next;
+    }
+};
