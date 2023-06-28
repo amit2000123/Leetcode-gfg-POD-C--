@@ -1,0 +1,28 @@
+/* The Node structure is
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+}; */
+
+class Solution{
+  public:
+    /*You are required to complete this method*/
+    int countDepth(Node *head){
+        if(head->left==NULL && head->right==NULL)
+            return 1;
+        if(head->left==NULL)
+            return 1+countDepth(head->right);
+        if(head->right==NULL)
+            return 1+countDepth(head->left);
+           
+        return 1+max(countDepth(head->left),countDepth(head->right));
+        
+    }
+    int maxDepth(Node *root) {
+       int maxdepth ;
+       maxdepth = countDepth(root);
+       return maxdepth;
+    }
+};
