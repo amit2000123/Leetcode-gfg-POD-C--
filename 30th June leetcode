@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<int> direc{0,-1,0,1,0};
+    bool solve(vector<vector<int>> &vis, int r, int c, int row, int col){
+        vis[r][c] = 1;
+
+        queue<vector<int>> q;
+        q.push({r,c});
+
+        while(!q.empty()){
+            vector<int> v = q.front();
+            q.pop();
+
+            if(v[0]>=(row-1)) return true;
+
+            for(int i=0;i<4;i++){
+                int x = v[0] + direc[i];
+                int y = v[1] + direc[i+1];
+
+                if(x>=0 && y>=0 && x<row && y<col && vis[x][y]==0){
+                    vis[x][y] = 1;
+                    q.push({x,y});
+                }
+            }
+        }
+
+        return false;
+    }
+    int latestDayToCross(int row, int col, vector<vector<int>>& cells) {
+        // vector<vector<int>> vis(row, vector<int> (col, 0));
+        int n = cells.size();
+        int s=0,e=n;
+        int ans =0;
+
+        while(s<=e){
+            int m = s + (e-s)/2;
+            vector<vector<int>> vis(row, vector<int> (col, 0));
+            for(int i=0;i<m;i++){
+                vis[cells[i][0]-1][cells[i][1]-1] = 1;
+            }
+            bool flag = false;
+            for(int i=0;i<col;i++){
+                if(vis[0][i]==0 && solve(vis,0,i,row,col)){
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag){
+                ans = max(ans,m);
+                s = m+1;
+            }else{
+                e = m-1;
+            }
+        }
+
+        return ans;
+    }
+};
