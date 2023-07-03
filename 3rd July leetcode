@@ -1,0 +1,32 @@
+class Solution {
+public:
+    bool buddyStrings(string s, string goal) {
+        if(s.size() != goal.size()){   // if both are of different size, then return false
+            return false;
+        }
+        int n = s.size();
+        if(n == 1){        // if both have size == 1, then return false
+            return false;
+        }
+        vector<int> ind;
+        for(int i=0; i<n; i++){
+            if(s[i] != goal[i]){
+                ind.push_back(i);
+            }
+        }
+        if(ind.empty()){     // empty vector means both strings are same
+            unordered_map<char,int> mp;
+            for(char& c : s){
+                mp[c]++;
+                if(mp[c] > 1){   // if any char occurs more than once, that means we can swap them
+                    return true; // for the string to remain same
+                }
+            }
+            return false;   // else we return false;
+        }else if(ind.size() == 1 or ind.size() > 2){ // if there are only 1 diff char or more than 2 diff chars, 
+            return false;   // then also we return false
+        }
+        swap(s[ind[0]], s[ind[1]]);
+        return s == goal;
+    }
+};
