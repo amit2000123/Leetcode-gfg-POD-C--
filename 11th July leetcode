@@ -1,0 +1,87 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+    TreeNode *_target;
+    int _k;
+    vector<int> ans;
+
+    int helper(TreeNode *root, int k){
+        // reached leaf node
+        if(root==NULL)
+            return -1;
+
+        // We hit target, so we call for children with new value of k
+        // and also return new k.
+        if(root==_target){
+            helper(root->left, _k);
+            helper(root->right, _k);
+
+            return _k;
+        }
+
+        // k is -1 only until target has not been found.
+        // After that it has a value from 1 to k.
+        if(k!=-1){
+            if(k==1){
+                ans.push_back(root->val);
+            } else{
+                helper(root->left, k-1);
+                helper(root->right, k-1);
+            }
+
+            // It doesn't matter what we return because we never use
+            // this value if k!=-1.
+            return -1;
+        }
+
+        // The below part handles the tough part.
+        // If returned value of k is not -1, it means target was found.
+        // So we call for all ancestors and subtrees until k equal 0.
+        int newK=helper(root->left, k);
+        if(newK!=-1){
+            if(newK==1){
+                ans.push_back(root->val);
+                return 0;
+            } else if(newK==0)
+                return 0;
+
+            helper(root->right, newK-1);
+
+            return newK-1;
+        }
+
+        newK=helper(root->right, k);
+        if(newK!=-1){
+            if(newK==1){
+                ans.push_back(root->val);
+                return 0;
+            } else if(newK==0)
+                return 0;
+
+            helper(root->left, newK-1);
+
+            return newK-1;
+        }
+
+        return -1;
+    }
+public:
+    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+        if(k==0){
+            return {target->val};
+        }
+
+        _target=target;
+        _k=k;
+        // ans.reserve(k);
+        helper(root, -1);
+        return ans;
+    }
+};
