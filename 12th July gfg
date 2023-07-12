@@ -1,0 +1,24 @@
+class Solution{
+    #define ll long long
+    public:
+    //You need to complete this fucntion
+    
+    long long power(int N,int R)
+    {
+       //Your code here
+       ll ans=1;
+       while(R>0){
+           if(R%2==0){
+               N=(N*1ll*N)%mod;
+               R/=2;
+           }
+           else{
+               ans=(ans*1ll*N)%mod;
+               R--;
+           }
+       }
+       return ans;
+        
+    }
+
+};
