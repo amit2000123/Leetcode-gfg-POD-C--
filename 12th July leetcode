@@ -1,0 +1,32 @@
+class Solution {
+  private:
+    bool dfs(int node, vector<int>& ds, vector<vector<int>>& graph) {
+        if (ds[node] != -1) return ds[node];  // Check if the state is already memoized
+        ds[node] = 0;  // Mark the current node as unsafe initially
+
+        for (auto neighbor : graph[node]) {
+            if (!dfs(neighbor, ds, graph)) {
+                ds[neighbor] = 0;  // Mark the neighbor as unsafe
+                return false;
+            }
+        }
+
+        ds[node] = 1;  // Mark the current node as eventually safe
+        return true;
+    }
+
+public:
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n = graph.size();
+        vector<int> result;  // Store the eventually safe nodes
+        vector<int> ds(n, -1);  // Memoization table for node states
+
+        for (int i = 0; i < n; i++) {
+            if (ds[i] == 1 || dfs(i, ds, graph)) {
+                result.push_back(i);  // Add the eventually safe node to the result
+            }
+        }
+
+        return result;
+    }
+};
