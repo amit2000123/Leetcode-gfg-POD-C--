@@ -1,0 +1,31 @@
+//User function Template for C++
+class Solution
+{
+    public:
+    bool isFrequencyUnique(int n, int arr[])
+    {
+        unordered_map<int,int> um;
+        for(int i=0 ; i<n ; i++)
+        {
+            um[arr[i]]++;
+        }
+        
+        vector<int> v;
+        for(auto e:um)
+        {
+            v.push_back(e.second);
+        }
+        
+        um.clear();
+        n=v.size();
+        for(int i=0 ; i<n ; i++)
+        {
+            um[v[i]]++;
+            if(um[v[i]]==2)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
