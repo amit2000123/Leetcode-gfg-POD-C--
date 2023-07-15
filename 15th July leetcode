@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int calc(vector<vector<int>>& events,int start,int k,int end,vector<vector<int>> &dp)
+    {
+        if(start==events.size()) return 0;
+
+        if(k==0) return 0;
+
+        if(events[start][0]<=end)
+        {
+            return calc(events,start+1,k,end,dp);
+        }
+        if(dp[start][k]!=-1)
+        {
+            return dp[start][k];
+        }
+        int choice=max(events[start][2]+calc(events,start+1,k-1,events[start][1],dp),calc(events,start+1,k,end,dp));
+        return dp[start][k]=choice;
+    }
+    int maxValue(vector<vector<int>>& events, int k) {
+        sort(events.begin(),events.end());
+        int n=events.size();
+        vector<vector<int>> dp(n,vector<int>(k+1,-1));
+        return calc(events,0,k,0,dp);
+    }
+};
