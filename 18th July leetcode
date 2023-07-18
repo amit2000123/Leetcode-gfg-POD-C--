@@ -1,0 +1,72 @@
+class LRUCache{
+    struct CacheEntry {
+        int key, val;
+        CacheEntry *prev, *next;
+        CacheEntry (int _key, int _val) : key(_key), val(_val), prev(NULL), next(NULL) {}
+    };
+    
+    int length;
+    CacheEntry *sentinel;
+    unordered_map<int, CacheEntry *> table;
+
+    void moveToHead(CacheEntry* entry) {
+        if (sentinel->next != entry) {
+            // not new
+            if (entry->prev != NULL || entry->next != NULL) {
+                entry->prev->next = entry->next;
+                entry->next->prev = entry->prev;
+                entry->next = NULL;
+                entry->prev = NULL;
+            }
+
+            // insert after sentinel
+            entry->next = sentinel->next;
+            sentinel->next->prev = entry;
+            entry->prev = sentinel;
+            sentinel->next = entry;
+        }
+    }
+public:
+    LRUCache(int capacity) {
+        length = capacity;
+        sentinel = new CacheEntry (-1, -1);
+        sentinel -> prev = sentinel -> next = sentinel;
+    }
+    
+    int get(int key) {
+        int ret = -1;
+        
+        if (table.count (key)) {
+            CacheEntry *curr = table[key];
+            /* needless to move with if it's already head */
+            moveToHead(curr);
+            
+            ret = curr -> val;
+        }
+        
+        return ret;
+    }
+    
+    void put(int key, int value) {
+        CacheEntry *entry;
+        
+        if (table.count (key)) {
+            entry = table[key];
+            entry -> val = value;
+        } else if (table.size() == length) {
+            /* full capacity reached, override the last node */
+            entry = sentinel -> prev;
+            /* modify the hashtable first */
+            table.erase (entry -> key);
+            table[key] = entry;
+
+            entry -> key = key;
+            entry -> val = value;
+        } else {
+            entry = new CacheEntry (key, value);
+            table[key] = entry;
+        }
+
+        moveToHead(entry);
+    }
+};
