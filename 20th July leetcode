@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        
+        int n = asteroids.size();
+        int i = 0;
+
+        while(i < n - 1) {
+            if((asteroids[i] > 0 && asteroids[i + 1] < 0)) {
+                if(abs(asteroids[i]) < abs(asteroids[i + 1])) {
+                    asteroids.erase(asteroids.begin() + i);
+                    n--;  // Reduce the size of the vector after erasing an element
+                    i = max(0, i - 1);  // Move the pointer back by 1 position to check again for collision
+                } 
+                else if (abs(asteroids[i]) > abs(asteroids[i + 1])) {
+                    asteroids.erase(asteroids.begin() + i + 1);
+                    n--; 
+                } 
+                else {
+                    asteroids.erase(asteroids.begin() + i);
+                    asteroids.erase(asteroids.begin() + i);
+                    n -= 2; 
+                    i = max(0, i - 1); 
+                }
+            } 
+            else 
+                i++;
+            
+        }
+
+        return asteroids;
+    }
+};
