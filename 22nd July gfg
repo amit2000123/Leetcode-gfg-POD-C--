@@ -1,0 +1,46 @@
+/*
+The structure of linked list is the following
+
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+*/
+
+
+class Solution
+{
+    public:
+    //Function to remove duplicates from unsorted linked list.
+    Node * removeDuplicates( Node *head) 
+    {
+        Node* nhead = NULL, *temp = NULL, *t = head;
+        
+        unordered_map<int,int> mp;
+        
+        while(t){
+            if(mp[t->data] == 0){
+                if(nhead == NULL){
+                    nhead = t;
+                    temp = t;
+                }
+                else{
+                    temp->next = t;
+                    temp = temp->next;
+                }
+                
+                mp[t->data]++;
+            }
+            
+            t = t->next;
+        }
+        
+        temp->next = NULL;
+        
+        return nhead;
+    }
+};
