@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<vector<double>>> dp;
+    double solve(int n, int k, int row, int col){
+        if(row < 0 || col < 0 || row >= n || col >= n){
+            return 0;
+        }
+        if(k == 0){
+            return 1; // the knight is definately on the board hence 1
+        }
+        if(dp[row][col][k]!= -1){
+            return dp[row][col][k];
+        }
+        double sum = 0;
+        for(int i = -2;i<=2;i++){
+            if(i == 0){
+                continue;
+            }
+            for(int j = -2; j<=2;j++){
+                if(j == 0 || abs(i) == abs(j)){
+                    continue;
+                }
+                int nr = row + i;
+                int nc = col + j;
+                sum += solve(n,k-1,nr,nc);
+            }
+        }
+        return dp[row][col][k] = sum/8;
+    }
+
+    double knightProbability(int n, int k, int row, int column) {
+        dp.resize(n,vector<vector<double>>(n,vector<double>(k+1,-1)));
+        return solve(n,k,row,column);
+    }
+};
