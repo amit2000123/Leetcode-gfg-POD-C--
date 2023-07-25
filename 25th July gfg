@@ -1,0 +1,48 @@
+
+
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child  
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+
+//Function to return a list containing the level order traversal in spiral form.
+vector<int> findSpiral(Node *root)
+{
+    bool level=1;
+    stack<Node*>st1,st2;
+    st1.push(root);
+    vector<int>ans;
+    while(!st1.empty())
+    {
+        int n=st1.size();
+        while(n--)
+        {
+            Node*temp=st1.top();
+            st1.pop();
+            ans.push_back(temp->data);
+            if(level)
+            {
+                if(temp->right) st2.push(temp->right);
+                if(temp->left) st2.push(temp->left);
+            }
+            else
+            {
+                if(temp->left) st2.push(temp->left);
+                if(temp->right) st2.push(temp->right);
+            }
+        }
+        swap(st1,st2);
+        level=!level;
+    }
+    return ans;
+}
