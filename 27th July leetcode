@@ -1,0 +1,38 @@
+//https://leetcode.com/problems/maximum-running-time-of-n-computers/submissions/1005073417/
+class Solution {
+private:
+	int len;
+	long long left, mid, right, tot;
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        ios::sync_with_stdio(false);
+        cin.tie(0);
+        cout.tie(0);
+        len = batteries.size();
+        right = left = batteries[0];
+    	for (mid = 1; mid < len; mid++){
+    		right += batteries[mid];
+    		if (left > batteries[mid])
+    			left = batteries[mid];
+    		
+    	}
+        if (n == len){
+        	return left;
+        }
+        
+        for (right /= n; left <= right; ){
+        	mid = left + (right - left) / 2;
+        	tot = 0;
+        	for (auto b : batteries){
+        		tot += min(mid, (long long)b);
+        	}
+        	if (tot == n * mid)
+        		return mid;
+        	else if (tot < n * mid)
+        		right = mid - 1;
+        	else
+        		left = mid + 1;
+        }
+        return right;
+    }
+};
