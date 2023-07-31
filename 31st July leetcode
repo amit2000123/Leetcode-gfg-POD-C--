@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minimumDeleteSum(string str1, string str2) {
+        int sz1 = str1.size(), sz2 = str2.size();
+        vector<vector<int>> indxChoice(sz1+1, vector<int>(sz2+1, 0));
+        int asciSum = 0;
+        for(auto c : str1){
+           asciSum += c - 'a' + 97;
+        }
+        for(auto c : str2){
+           asciSum += c - 'a' + 97;
+        }
+        for(int indx1 = 1; indx1 <= sz1; indx1++){
+            for(int indx2 = 1; indx2 <= sz2; indx2++){
+                if(str1[indx1-1] == str2[indx2-1]){
+                    indxChoice[indx1][indx2] = str1[indx1-1]-'a' + 97 + indxChoice[indx1-1][indx2-1];
+                }else{
+                     indxChoice[indx1][indx2] = max(indxChoice[indx1-1][indx2], indxChoice[indx1][indx2-1]); 
+                }
+            }
+        }
+        return asciSum - 2 * indxChoice[sz1][sz2];
+    }
+};
