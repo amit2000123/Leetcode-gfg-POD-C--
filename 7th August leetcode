@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int ml=0,nl=0,mh=matrix.size()-1,nh=matrix[0].size()-1;
+        while(ml<mh){
+            int mid=ceil((ml+mh)/2.0);
+            if(target==matrix[mid][0]){
+                return true;
+            }else if(target<matrix[mid][0]){
+                mh=mid-1;
+            }else{
+                ml=mid;
+            }
+        }
+        while(nl<nh){
+            int mid=ceil((nl+nh)/2.0);
+            if(target==matrix[ml][mid]){
+                return true;
+            }else if(target<matrix[ml][mid]){
+                nh=mid-1;
+            }else{
+                nl=mid;
+            }
+        }
+        return matrix[ml][nl]==target;
+    }
+};
