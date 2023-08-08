@@ -1,0 +1,26 @@
+//User function Template for C++
+class Solution
+{
+    public:
+    int countFractions(int n, int numerator[], int denominator[])
+    {
+        int cnt=0;
+        map<pair<int,int>,int> mpp;
+        for(int i=0;i<n;i++){
+            int num1=numerator[i];
+            int num2=denominator[i];
+            int pairgcd=__gcd(num1,num2);
+            num1=num1/pairgcd;
+            num2=num2/pairgcd;
+            int temp1=num2-num1;
+            
+            if(mpp.find({temp1,num2})!=mpp.end()){
+                cnt +=mpp[{temp1,num2}];
+            }
+            
+            mpp[{num1,num2}]++;
+        }
+        
+        return cnt;
+    }
+};
