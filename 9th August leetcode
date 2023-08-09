@@ -1,0 +1,37 @@
+int n;
+class Solution {
+private:
+    bool isPossible(int diff, vector<int>& nums, int p){
+        int count = 0;
+        for(int i=1; i<n; i++){
+            if(nums[i] - nums[i-1] <= diff){
+                count++;
+                i++;
+            }
+        }
+        return count >= p;
+    }
+public:
+    int minimizeMax(vector<int>& nums, int p) {
+        
+        sort(nums.begin(),nums.end());
+        n = nums.size();
+
+        int low = 0;
+        int high = nums[n-1] - nums[0];
+        int ans = 0;
+
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(isPossible(mid,nums,p)){
+                ans = mid;
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+};
