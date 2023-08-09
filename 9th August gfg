@@ -1,0 +1,15 @@
+class Solution{
+public: 
+    long long int largestPrimeFactor(int aabbccddeeffgghhiijjkkllmmnnoo) {
+        int zz = 1 ; 
+        for(int xx = 2; xx <= aabbccddeeffgghhiijjkkllmmnnoo; xx++) {
+            while(aabbccddeeffgghhiijjkkllmmnnoo % xx == 0) {
+                zz = max(zz, xx);
+                aabbccddeeffgghhiijjkkllmmnnoo /= xx;
+            }
+        }
+       if(zz == 1) return aabbccddeeffgghhiijjkkllmmnnoo;
+       else return zz;
+    }
+
+};
