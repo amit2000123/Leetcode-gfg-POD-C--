@@ -1,0 +1,27 @@
+class Solution {
+    int l;
+
+    int check(int amount, int p, vector<int> coins,vector<vector<int>> &dp){
+        int ans=0;
+        if(amount==0){
+            return 1; // base case: if amount is zero, there is one way to make it (by choosing no coin)
+        }
+        else if(dp[amount][p]==-1){
+            for(int i=p;i<l;i++){
+                if(amount>=coins[i])
+                ans+=check(amount-coins[i],i,coins,dp); // recursive call: add the number of ways to make amount-coins[i] using coins[i] or later coins
+                else
+                break; // optimization: if amount is less than coins[i], no need to check further coins as they are sorted
+            }
+            dp[amount][p]=ans; // memoization: store the computed answer in dp array
+        }
+        return dp[amount][p]; // return the answer from dp array
+    }
+public:
+    int change(int amount, vector<int>& coins) {
+        sort(coins.begin(),coins.end()); // sort the coins array in ascending order
+        l=coins.size(); // store the size of coins array
+        vector<vector<int>> dp(5001,vector<int>(l+1,-1)); // create a 2D vector of size (amount+1) x (l+1) and fill it with -1
+        return check(amount,0,coins,dp); // call the recursive function with initial parameters
+    }
+};
