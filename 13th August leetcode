@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int> dp;
+
+    bool isValidPartition(int idx, vector<int>& nums){
+        if(idx == nums.size())
+            return true;
+        
+        if(dp[idx] != -1)
+            return dp[idx];
+
+        // If only one element left for checking
+        if(idx + 1 == nums.size())
+            return false;
+        
+        // Two equal check
+        bool ans = false;
+        if(nums[idx] == nums[idx+1])
+            ans = isValidPartition(idx+2, nums);
+
+        // If only two elements left for checking but we've to check for 3
+        if(!ans && idx + 2 == nums.size()){
+            return false;
+        }
+
+        // 3 elements equal check
+        if(!ans && nums[idx] == nums[idx+1] && nums[idx+1] == nums[idx+2]){
+            ans = isValidPartition(idx+3, nums);
+        }
+
+        // Consecutive equal check
+        if(!ans && nums[idx+1] - nums[idx] == 1 && nums[idx+2] - nums[idx+1] == 1){
+            ans = isValidPartition(idx+3, nums);
+        }
+
+        return dp[idx] = ans;
+    }
+
+    bool validPartition(vector<int>& nums) {
+        dp.resize(nums.size()+1, -1);
+        return isValidPartition(0, nums);
+    }
+};
