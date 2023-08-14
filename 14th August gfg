@@ -1,0 +1,24 @@
+class Solution
+{
+public:
+    vector<int> singleNumber(vector<int> nums) 
+    {
+        // Code here.
+        sort(nums.begin(),nums.end());
+        map<int,int>f;
+        for(int i = 0;i<nums.size();i++){
+            f[nums[i]]++;
+        }
+        
+        map<int,int>::iterator it = f.begin();
+        
+        vector<int> ans;
+        while(it!=f.end()){
+            if(it->second==1){
+                ans.push_back(it->first);
+            }
+            ++it;
+        }
+        return ans;
+    }
+};
