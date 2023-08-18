@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maximalNetworkRank(int n, vector<vector<int>>& roads) {
+        set<pair<int,int>>st;
+        vector<int> deg(n,0);
+        for(auto &r:roads){
+            // counting number of times the node appears
+            deg[r[0]]++;deg[r[1]]++;
+            // inset the edge that exists in set
+            st.insert({r[0],r[1]});
+            st.insert({r[1],r[0]});
+        }
+        int maxi=0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                // i ans j are nodes (there are n nodes, {i,j} is a random pair)
+                int rank=deg[i]+deg[j];
+                // total should be number of times ith node appears+jth node appears
+                if(st.find({i,j})!=st.end())rank--;
+                // there might be a possibility that i and j were on the same edge so we decrease the total count by 1(common edge)
+                maxi=max(maxi,rank);
+            }
+        }
+        return maxi;
+    }
+};
