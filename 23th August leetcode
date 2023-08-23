@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+
+        int n=s.size();
+        vector<pair<int, char>> alpha(26,{0,'0'});
+        for(auto x:s){
+            alpha[x-'a'].first++;
+            alpha[x-'a'].second = x;
+        }
+        sort(alpha.rbegin(),alpha.rend());
+        string ans=s;
+        int j=0;
+        for(int i=0;i<n;i+=2){
+            while(j<n && (alpha[j].second=='0' || alpha[j].first<=0)){
+                j++;
+            }
+            ans[i]=alpha[j].second;
+            alpha[j].first--;
+        }
+
+        for(int i=1;i<n;i+=2){
+            while(j<n && (alpha[j].second=='0' || alpha[j].first<=0)){
+                j++;
+            }
+            ans[i]=alpha[j].second;
+            alpha[j].first--;
+        }
+        for(int i=0;i<n-1;i++){
+            if(ans[i]==ans[i+1]){
+                string st;
+                return st;
+            }
+        }
+        return ans;
+    }
+};
