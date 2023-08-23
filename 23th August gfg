@@ -1,0 +1,34 @@
+class Solution {
+public:
+	vector<vector<int>>searchWord(vector<vector<char>>grid, string word){
+	    vector<vector<int>>ans;
+	    int n=grid.size();
+	    int m=grid[0].size();
+	    int drow[]={-1,0,1,1,1,0,-1,-1};
+	    int dcol[]={1,1,1,0,-1,-1,-1,0};
+	    
+	    for(int i=0;i<n;i++){
+	        for(int j=0;j<m;j++){
+	            if(grid[i][j]==word[0]){
+	                
+	                for(int k=0;k<8;k++){
+	                    int p=1;
+	                    int nrow=i+drow[k];
+	                    int ncol=j+dcol[k];
+	                    
+	                    while(p<word.size() && nrow>=0 && nrow<n && ncol>=0 && ncol<m && grid[nrow][ncol]==word[p]){
+	                        p++;
+	                        nrow+=drow[k];
+	                        ncol+=dcol[k];
+	                    }
+	                    if(p==word.size()){
+	                        ans.push_back({i,j});
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	    }
+	    return ans;
+	}
+};
