@@ -1,0 +1,107 @@
+class Solution
+{
+public:
+    // Process a line containing only one word.
+    void processOneWord(vector<string> &currLine, int currLen, int maxWidth, vector<string> &ans)
+    {
+        int spaces = maxWidth - currLen;
+
+        // Add spaces to the end of the word until it reaches the maxWidth.
+        while (spaces--)
+        {
+            currLine[0] += " ";
+        }
+        ans.push_back(currLine[0]);
+    }
+
+    // Process a line containing multiple words.
+    void processKWords(vector<string> &currLine, int currLen, int maxWidth, vector<string> &ans)
+    {
+        int spaces = maxWidth - currLen;
+        int evenSpaces = spaces / (currLine.size() - 1);
+        int unevenSpaces = spaces % (currLine.size() - 1);
+
+        // Add even spaces between words.
+        for (int i = 0; i < currLine.size() - 1; i++)
+        {
+            currLine[i] += " ";
+            int k = 0;
+            while (k < evenSpaces)
+            {
+                currLine[i] += " ";
+                k++;
+            }
+        }
+
+        // Add uneven spaces to distribute remaining spaces.
+        int i = 0;
+        while (unevenSpaces--)
+        {
+            currLine[i] += " ";
+            i++;
+        }
+
+        // Concatenate words with spaces and add to the result.
+        string res = "";
+        for (auto &x : currLine)
+        {
+            res += x;
+        }
+        ans.push_back(res);
+    }
+
+    // Process the last line, left-aligning the words and adding spaces.
+    void processLastLine(vector<string> &currLine, int currLen, int maxWidth, vector<string> &ans)
+    {
+        int spaces = maxWidth - currLen;
+        string res = currLine[0];
+
+        // Add spaces between words.
+        for (int i = 1; i < currLine.size(); i++)
+        {
+            res += " ";
+            res += currLine[i];
+        }
+
+        // Add remaining spaces to the end of the line.
+        while (spaces--)
+        {
+            res += " ";
+        }
+        ans.push_back(res);
+    }
+
+    vector<string> fullJustify(vector<string> &words, int maxWidth)
+    {
+        vector<string> currLine;         // Current line being processed.
+        vector<string> ans;              // Resultant fully justified text.
+        currLine.push_back(words[0]);    // Initialize the current line.
+        int currLen = words[0].length(); // Initialize current line length.
+
+        // Process each word.
+        for (int i = 1; i < words.size(); i++)
+        {
+            if (currLen + words[i].length() + 1 <= maxWidth)
+            {
+                currLine.push_back(words[i]);
+                currLen += words[i].length() + 1;
+            }
+            else
+            {
+                if (currLine.size() == 1)
+                {
+                    processOneWord(currLine, currLen, maxWidth, ans);
+                }
+                else
+                {
+                    processKWords(currLine, currLen, maxWidth, ans);
+                }
+                currLine.clear(); // Clear current line for the next set of words.
+                currLine.push_back(words[i]);
+                currLen = words[i].length();
+            }
+        }
+        processLastLine(currLine, currLen, maxWidth, ans); // Process the last line.
+        return ans;                                        // Return the fully justified text.
+    }
+};
