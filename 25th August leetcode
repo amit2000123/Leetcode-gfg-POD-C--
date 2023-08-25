@@ -1,0 +1,62 @@
+class Solution {
+public:
+
+    bool helper(string s1, string s2, string s3, int idx1, int idx2, int idx3, 
+        int size1, int size2, int size3, vector<vector<int>>& mem)
+    {
+        // cout << s1[idx1] <<" "<< s2[idx2]<<" "<< s3[idx3] << endl;
+        if (idx1 >= size1 && idx2 >= size2 && idx3 < size3) return false;
+        if (idx1 >= size1 && idx2 >= size2 && idx3 >= size3) return true;
+
+        if (mem[idx1][idx2] == -1)
+        {
+            if (idx1 >= size1) // choose from s2
+            {
+                if (s2[idx2] != s3[idx3]) {
+                    mem[idx1][idx2] = false;
+                }
+                else mem[idx1][idx2] = helper(s1, s2, s3, idx1, idx2 + 1, idx3 + 1, size1, size2, size3, mem);
+            }
+            else if (idx2 >= size2) // choose from s1
+            {
+                if (s1[idx1] != s3[idx3]) {
+                    mem[idx1][idx2] = false;
+                }
+                else mem[idx1][idx2] = helper(s1, s2, s3, idx1 + 1, idx2, idx3 + 1, size1, size2, size3, mem);
+            }
+            else
+            {
+                if (s1[idx1] != s2[idx2]) // choose from same
+                {
+                    if (s1[idx1] == s3[idx3]) {
+                        mem[idx1][idx2] = helper(s1, s2, s3, idx1 + 1, idx2, idx3 + 1, size1, size2, size3, mem);
+                    }
+                    else if(s2[idx2] == s3[idx3]) {
+                        mem[idx1][idx2] = helper(s1, s2, s3, idx1, idx2 + 1, idx3 + 1, size1, size2, size3, mem);
+                    }
+                    else {
+                        mem[idx1][idx2] = false;
+                    }
+                }
+                else // choose from either
+                {
+                    if (s1[idx1] != s3[idx3]) mem[idx1][idx2] = false;
+                    else {
+                        bool r = false;
+                        r |= helper(s1, s2, s3, idx1 + 1, idx2, idx3 + 1, size1, size2, size3, mem);
+                        r |= helper(s1, s2, s3, idx1, idx2 + 1, idx3 + 1, size1, size2, size3, mem);
+                        mem[idx1][idx2] = r;
+                    }
+                }
+            }
+        }
+        return mem[idx1][idx2];
+    }
+
+    bool isInterleave(string s1, string s2, string s3) {
+        int size1 = s1.size(), size2 = s2.size(), size3 = s3.size();
+        //int csize = max(size1, size2);
+        vector<vector<int>> mem(101, vector<int>(101, -1));
+        return helper(s1, s2, s3, 0,0,0, size1, size2, size3, mem);
+    }
+};
