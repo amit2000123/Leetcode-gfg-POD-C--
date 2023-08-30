@@ -1,0 +1,14 @@
+class Solution {
+public:
+    long long minimumReplacement(vector<int>& nums) {
+        int n=nums.size(),l=nums[n-1]; //l=last (largest) elem
+        long long ans=0;
+        for (int i=n-2;i>=0;--i) {
+            int st=(nums[i]-1)/l;  // st= steps needed to split the elements so that it becomes equal to or smaller than last elem.
+            int new1=nums[i]/(st+1);;  //new1= new smallest elem after splitting current elem's.
+            ans+=st;
+            l=new1;
+        }
+        return ans;
+        }
+};
