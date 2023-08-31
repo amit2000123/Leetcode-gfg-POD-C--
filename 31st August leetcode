@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int solve(int i, int range, int n, vector<pair<int,int>>& v, map<pair<int,int>,int> & m){
+        if(i==v.size())
+        {
+            if(range>=n)
+            return 0;
+            else
+            return 1e9;
+        }
+        if(range >= n)
+        return 0;
+
+        if(v[i].first > range)
+        return 1e9;
+
+        if(m.find({i,range})!=m.end())
+        return m[{i,range}];
+
+        int nottake = solve(i+1,range,n,v,m);
+        int take = 1+solve(i+1,max(range,v[i].second),n,v,m);
+
+        return m[{i,range}] = min(take,nottake); 
+    }
+    int minTaps(int n, vector<int>& ranges) {
+        vector<pair<int,int>> v;
+        int maxm = INT_MIN;
+        for(int i=0;i<ranges.size();i++)
+        {
+            v.push_back({max(0,i-ranges[i]),i+ranges[i]});
+            maxm = max(maxm,i+ranges[i]);
+        }
+        if(maxm < n)
+        return -1;
+
+        sort(v.begin(),v.end());
+        map<pair<int,int>,int> m;
+        // vector<vector<int>> dp(n+1,vector<int>(maxm+1,-1));
+        int ans = solve(0,0,n,v,m);
+        return ans == 1e9?-1:ans;
+    }
+};
