@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<int> records;
+    vector<int> countBits(int n) {
+        vector<int> ret(n + 1);
+        this->records = vector<int>(n + 1, -1);
+        for (int v = 0; v <= n; v++){
+            ret[v] = helper(v);
+        }
+        return ret;
+    }
+    int helper(int v){
+        if (v <= 1) return v;
+        if (this->records[v] != -1) return this->records[v];
+        int ret = helper(v / 2);
+        if (v % 2 == 1) ret++;
+        this->records[v] = ret;
+        return ret;
+    }
+};
