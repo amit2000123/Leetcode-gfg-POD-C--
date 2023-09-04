@@ -1,0 +1,26 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+int speedup = []{ios::sync_with_stdio(0); cin.tie(0); return 0;}();
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *fast=head, *slow=head;
+        while(fast&&fast->next){
+            slow=slow->next; // we'll move slow once...
+            fast=fast->next->next; // we'll move fast twice...
+
+            // if fast==slow...
+            if(fast==slow){
+                // loop detected....
+                return true;
+            }
+        }
+        return false;
+    }
+};
