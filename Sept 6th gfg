@@ -1,0 +1,31 @@
+class Solution {
+    public:
+    vector<int> vis;
+    
+    void dfs(int node, vector<int> adj[]) {
+        vis[node] = true;
+        for(int child: adj[node]) {
+            if(vis[child]) continue;
+            dfs(child, adj);
+        }
+    }
+    
+	int findMotherVertex(int n, vector<int>adj[]) {
+	    vis = vector<int>(n, false);
+	    int ans = -1;
+	    for(int i = 0; i < n; i++) {
+	        if(vis[i]) continue;
+    	    dfs(i, adj);
+    	    ans = i;
+	    }
+	    
+	    vis = vector<int>(n, false);
+	    dfs(ans, adj);
+	    
+	    for(int i = 0; i < n; i++)
+	        if(vis[i] == false) 
+	            return -1;
+	            
+	    return ans;
+	}
+};
