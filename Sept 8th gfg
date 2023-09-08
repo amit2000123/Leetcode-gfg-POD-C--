@@ -1,0 +1,42 @@
+class Solution{
+  public:
+      void  traversal(Node *root, vector<int>&inorder)
+    {
+       if(root==NULL)
+       return;
+       traversal(root->left,inorder);
+       inorder.push_back(root->data);
+       traversal(root->right,inorder);
+        
+    }
+    
+    Node *btobst(vector<int>&inorder,int left,int right)
+    {
+        if(left>right)
+        return NULL;
+        
+        int mid=(left+right)/2;
+        
+        Node *root=new Node(inorder[mid]);              // creating the root node 
+        
+        root->left=btobst(inorder,left,mid-1);          // recursive left call  
+        
+        root->right=btobst(inorder,mid+1,right);        // recursive right call
+        
+        return root;
+        
+        
+    }
+    Node *binaryTreeToBST (Node *root)
+    {
+        vector<int> inorder;
+        if(root==NULL)
+        return NULL;
+        traversal(root,inorder);
+        sort(inorder.begin(),inorder.end());
+       int right=inorder.size()-1;
+       Node*ans= btobst(inorder,0,right);
+       return ans;
+    
+    }
+};
