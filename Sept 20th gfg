@@ -1,0 +1,13 @@
+class Solution
+{
+  public:
+        vector <int> rotate (int n, int d)
+        {
+            //code here.
+             d = d%16;
+            int a = ((n<<d) | (n>>(16-d))) & 0xFFFF;
+            int b = ((n>>d) | (n<<(16-d))) & 0xFFFF;
+            
+            return {a,b};
+        }
+};
