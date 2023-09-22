@@ -1,0 +1,24 @@
+class Solution
+{
+public:
+ bool canMakeSubsequence(string Nags, string gaddi)
+ {
+  if (gaddi.length() > Nags.length())
+  {
+   return false;
+  }
+  int temp = 0;
+  for (int i = 0; i < Nags.length() && temp < gaddi.length()  ; i++)
+  {
+   if (Nags[i] == gaddi[temp])
+   {
+    temp++;
+   }
+   else if (((Nags[i] - 'a') + 1) % 26 + 'a' == gaddi[temp])
+   {
+    temp++;
+   }
+  }
+  return temp == gaddi.length();
+ }
+};
