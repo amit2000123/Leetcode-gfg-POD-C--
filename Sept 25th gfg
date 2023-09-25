@@ -1,0 +1,19 @@
+class Solution {
+  public:
+    vector<int> maxCombinations(int N, int K, vector<int> &A, vector<int> &B) {
+        sort(A.begin(),A.end());
+        sort(B.begin(),B.end());
+        priority_queue<pair<int,int>>pq;
+        for(int i=0;i<N;i++){
+            pq.push({A[i]+B[N-1],N-1});
+        }
+        vector<int>ans;
+        while(K-- and !pq.empty()){
+            auto f=pq.top();
+            pq.pop();
+            ans.push_back(f.first);
+            if(f.second>0)pq.push({f.first-B[f.second]+B[f.second-1],f.second-1});
+        }
+        return ans;
+    }
+};
