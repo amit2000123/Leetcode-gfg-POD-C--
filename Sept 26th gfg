@@ -1,0 +1,44 @@
+class Solution{
+    public:
+    // arr[] : int input array of integers
+    // k : the quadruple sum required
+    vector<vector<int> > fourSum(vector<int> &arr, int target) {
+        vector<vector<int> > ans;
+        
+        sort(arr.begin(),arr.end());
+        int n=arr.size();
+        for(int i=0;i<n-3;i++){
+            for(int j=i+1;j<n-2;j++){
+                 int start=j+1,end=n-1;
+                // int sum=0;
+                while(start<end){
+                    int sum=arr[i]+arr[j]+arr[start]+arr[end];//if you getting overflow here simply typecast with (long long) both side
+                    if(sum>target){
+                        end--;
+                    }
+                    else if(sum<target){
+                        start++;
+                    }
+                    else{
+                        ans.push_back({arr[i],arr[j],arr[start],arr[end]});
+                        while(start<end && arr[start]==arr[start+1]){
+                            start++;
+                        }
+                        while(start<end && arr[end]==arr[end-1]){
+                            end--;
+                        }
+                        start++,end--;
+                    }
+                }//end while
+                while(j<n-2 && arr[j]==arr[j+1]){//may be jth element are same which are upcoming next
+                    j++;
+                }
+            }//j for
+            while(i<n-3 && arr[i]==arr[i+1]){//may be ith element are same which are upcoming next
+                    i++;
+            }
+        }//i for
+        
+        return ans;
+    }
+};
