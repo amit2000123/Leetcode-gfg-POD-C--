@@ -1,0 +1,37 @@
+//User function template for C++
+
+class Solution
+{
+  public:
+    long long int fun(string s,int k)
+    {
+        int i=0,j=0;
+        int n=s.size();
+        int freq[26]={0};
+        int dcount=0;
+        long long int ans=0;
+        while(j<n)
+        {
+            freq[s[j]-'a']++;
+            if(freq[s[j]-'a']==1)
+            {
+                dcount++;
+            }
+            while(dcount>k)
+            {
+                freq[s[i]-'a']--;
+                if(freq[s[i]-'a']==0)
+                    dcount--;
+                i++;
+            }
+            j++;
+            ans+=(j-i+1);
+        }
+        return ans;
+    }
+    
+    long long int substrCount (string s, int k) {
+    	//code here.
+    	  return fun(s,k)-fun(s,k-1);
+    }
+};
