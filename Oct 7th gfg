@@ -1,0 +1,15 @@
+class Solution
+{
+    public:
+    Node* pairWiseSwap(struct Node* head) 
+    {
+       if(head==nullptr || head->next==nullptr)
+       {
+           return head;
+       }
+       Node * temp=head->next;
+       head->next=pairWiseSwap(temp->next);
+       temp->next=head;
+       return temp;
+    }
+};
