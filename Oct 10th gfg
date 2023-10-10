@@ -1,0 +1,98 @@
+/* A binary Tree node
+struct Node
+{
+    int data;
+    struct Node *left, *right;
+};
+*/
+
+class Solution
+{
+private:
+
+public:
+
+    vector <int> KDistanceNodes(Node* root, int target , int k)
+    {
+        // return the sorted vector of all nodes at k dist
+          unordered_map<Node*, Node*> parantNode;
+        findParantNode(parantNode, root);
+        
+        Node* targetNode = findTargetNode(root, target);
+        unordered_map<Node*, bool> visited;
+        
+        queue<Node*> kNode;
+        kNode.push(targetNode);
+        visited[targetNode] = true;
+        int distence = 0;
+        
+        while(!kNode.empty() && distence != k){
+            int size = kNode.size();
+            for(int i = 0; i < size; i++){
+                Node* current = kNode.front();
+                kNode.pop();
+                
+                if(current->left && !visited[current->left]){
+                    kNode.push(current->left);
+                    visited[current->left] = true;
+                }
+                
+                if(current->right && !visited[current->right]){
+                    kNode.push(current->right);
+                    visited[current->right] = true;
+                }
+                
+                if(parantNode[current] && !visited[parantNode[current]]){
+                    kNode.push(parantNode[current]);
+                    visited[parantNode[current]] = true;
+                }
+            }
+            distence++;
+        }
+        vector<int> result;
+        while(!kNode.empty()){
+            Node* current = kNode.front();
+            kNode.pop();
+            result.push_back(current->data);
+        }
+        
+        sort(result.begin(), result.end());
+        
+        return result;
+    }
+    
+    void findParantNode(unordered_map<Node*, Node*>& parantNode, Node* root){
+        queue<Node*> q;
+        q.push(root);
+        
+        while(!q.empty()){
+            Node* current = q.front();
+            q.pop();
+            if(current->left){
+                parantNode[current->left] = current;
+                q.push(current->left);
+            }
+            if(current->right){
+                parantNode[current->right] = current;
+                q.push(current->right);
+            }
+        }
+    }
+    
+    /*Node* findTargetNode(Node* root, int target){
+        if(root == NULL) return NULL;
+        if(root->data == target) return root;
+        if(root->left){findTargetNode(root->left, target);}
+        if(root->right){findTargetNode(root->right, target);}
+        return NULL;
+    }*/
+    Node* findTargetNode(Node* root, int target) {
+        if (root == NULL) return NULL;
+        if (root->data == target) return root;
+        Node* leftSearch = findTargetNode(root->left, target);
+        if(leftSearch) return leftSearch; // returning if found in left subtree
+        Node* rightSearch = findTargetNode(root->right, target);
+        if(rightSearch) return rightSearch; // returning if found in right subtree
+        return NULL;
+    }
+};
