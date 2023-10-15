@@ -1,0 +1,49 @@
+/*Structure of the Node of the BST is as
+struct Node
+{
+	int data;
+	Node* left, *right;
+};
+*/
+
+class Solution{
+    
+    public:
+    vector<int> v;
+
+// Function to do an in-order traversal of the BST and store the elements in a vector
+void in(Node* root) {
+    if (!root) {
+        return;
+    }
+    in(root->left);
+    v.push_back(root->data);
+    in(root->right);
+}
+
+// Function to build a balanced BST from the sorted vector
+Node* build(int left, int right) {
+    if (left > right) {
+        return NULL;
+    }
+    
+    int mid = (left + right) / 2;
+    Node* root = new Node(v[mid]);
+    
+    root->left = build(left, mid - 1);
+    root->right = build(mid + 1, right);
+    
+    return root;
+}
+
+Node* buildBalancedTree(Node* root) {
+    // Step 1: Perform an in-order traversal and store the elements in the vector v
+    in(root);
+
+    // Step 2: Build a balanced BST using the elements in the vector
+    Node* newRoot = build(0, v.size() - 1);
+
+    return newRoot;
+}
+
+};
