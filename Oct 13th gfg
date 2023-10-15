@@ -1,0 +1,20 @@
+// Function to search a node in BST.
+class Solution{
+
+public:
+    void inorder(Node* root, vector<int>&v){
+        if(root==NULL)return;
+        inorder(root->left,v);
+        v.push_back(root->data);
+        inorder(root->right,v);
+    }
+    int y=-1;
+    int floor(Node* root, int x) {
+        vector<int>v;
+        inorder(root,v);
+        for(int i=v.size()-1;i>=0;i--){
+            if(x>=v[i])y=max(y,v[i]);
+        }
+        return y;
+    }
+};
