@@ -1,0 +1,12 @@
+
+
+class Solution{
+public:
+    long long sum = 0;
+    long long sumOfDivisors(int N){
+        for(int i=1; i<=N; i++){
+            sum += (i*(N/i));
+        }
+        return sum;
+    }
+};
