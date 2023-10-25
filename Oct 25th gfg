@@ -1,0 +1,24 @@
+// User function Template for C++
+
+class Solution{
+public:
+        int dp[1010][1010];
+    int solve(int i, int N, int W, int val[], int wt[])
+    {
+        if(i >= N) return 0;
+        if(dp[i][W] != -1) return dp[i][W];
+        int take = 0, notTake = 0;
+        
+        if(W >= wt[i])
+          take = val[i] + solve(i, N, W - wt[i], val, wt);
+        notTake = solve(i + 1, N, W, val, wt);
+        
+        return dp[i][W] = max(take, notTake);
+    }
+    
+    int knapSack(int N, int W, int val[], int wt[])
+    {
+        memset(dp, -1, sizeof(dp));
+        return solve(0, N, W, val, wt);
+    }
+};
